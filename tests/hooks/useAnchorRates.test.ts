@@ -12,7 +12,7 @@ vi.mock('@/lib/stellar/rates-engine', () => ({
 
 // Fresh SWR cache per test — prevents cross-test cache pollution
 const wrapper = ({ children }: { children: React.ReactNode }) =>
-  createElement(SWRConfig, { value: { provider: () => new Map() } }, children)
+  createElement(SWRConfig, { value: { provider: () => new Map() } }, children);
 
 const mockRates: RateComparison = {
   corridorId: 'usdc-ngn',
@@ -31,6 +31,26 @@ const mockRates: RateComparison = {
       updatedAt: new Date(),
     },
   ],
+};
+
+function setDocumentHidden(hidden: boolean): void {
+  Object.defineProperty(document, 'hidden', {
+    configurable: true,
+    value: hidden,
+  });
+}
+
+async function dispatchVisibilityChange(hidden: boolean): Promise<void> {
+  setDocumentHidden(hidden);
+  await act(async () => {
+    document.dispatchEvent(new Event('visibilitychange'));
+  });
+}
+
+async function flushMicrotasks(): Promise<void> {
+  await act(async () => {
+    await Promise.resolve();
+  });
 }
 
 beforeEach(() => {
@@ -40,10 +60,13 @@ beforeEach(() => {
 
 describe('useAnchorRates', () => {
   it('is loading on initial render', () => {
-    vi.stubGlobal('fetch', vi.fn(() => new Promise(() => {})))
-    const { result } = renderHook(() => useAnchorRates('usdc-ngn', '100'), { wrapper })
-    expect(result.current.isLoading).toBe(true)
-  })
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(() => new Promise(() => {}))
+    );
+    const { result } = renderHook(() => useAnchorRates('usdc-ngn', '100'), { wrapper });
+    expect(result.current.isLoading).toBe(true);
+  });
 
   it('returns rates with bestRateId once data loads', async () => {
     vi.mocked(fetchRates).mockResolvedValueOnce({
@@ -56,7 +79,7 @@ describe('useAnchorRates', () => {
       ]
     })
 
-    const { result } = renderHook(() => useAnchorRates('usdc-ngn', '100'), { wrapper })
+    renderHook(() => useAnchorRates('usdc-ngn', '100'), { wrapper });
 
     await waitFor(() => expect(result.current.isLoading).toBe(false), { timeout: 2000 })
     expect(result.current.rates?.bestRateId).toBe('cowrie')
