@@ -87,7 +87,7 @@ jobs:
             node scripts/reputation-integrity.mjs
           else
             echo "No reputation integrity script yet — placeholder for v2."
-            echo "Tracked in issue.md §168 (composite score test vectors)."
+            echo "Tracked in the GitHub issue tracker (composite score test vectors)."
           fi
 
   open-issue-on-failure:

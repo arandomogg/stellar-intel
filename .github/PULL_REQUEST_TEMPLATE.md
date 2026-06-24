@@ -118,7 +118,7 @@ merge a PR with an unaddressed box.
 
 **Data integrity**
 
-- [ ] No fabricated rates, stub prices, or placeholder exchange rates (see the no-fabricated-rates rule in [`issue.md`](../issue.md))
+- [ ] No fabricated rates, stub prices, or placeholder exchange rates (see the no-fabricated-rates rule in [`CONTRIBUTING.md`](../CONTRIBUTING.md))
 - [ ] No `isMock`, `// MOCK`, `// TODO: replace with real data`, or commented-out real code
 - [ ] If touching an anchor: the anchor's `stellar.toml` is publicly resolvable at `https://{domain}/.well-known/stellar.toml` and contains `TRANSFER_SERVER_SEP0024`
 - [ ] If touching SEP-10: network passphrase assertion is intact (mainnet only)

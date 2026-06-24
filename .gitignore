@@ -46,6 +46,6 @@ next-env.d.ts
 .claude
 
 # local planning artifacts (not shipped)
-/issue.md
+/issues-batch-2.md
 /maintainer.md
-/scripts/file-issues.mjs
+/scripts/create-batch-2-issues.mjs
