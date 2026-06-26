@@ -41,11 +41,16 @@ export const ANCHORS: Anchor[] = [
 
 export const KNOWN_ANCHORS = ANCHORS;
 
-export const ANCHOR_HOME_DOMAINS: Record<string, string> = {
-  moneygram: 'stellar.moneygram.com',
-  cowrie: 'cowrie.exchange',
-  anclap: 'anclap.com',
-} as const;
+/**
+ * Map of anchor id → home domain.
+ *
+ * Derived from {@link ANCHORS} so it can never drift from the canonical
+ * registry. Do not hand-maintain a parallel literal here: register the anchor in
+ * {@link ANCHORS} and this map updates with it.
+ */
+export const ANCHOR_HOME_DOMAINS: Record<string, string> = Object.fromEntries(
+  ANCHORS.map((anchor) => [anchor.id, anchor.homeDomain])
+);
 
 // ─── Corridors ────────────────────────────────────────────────────────────────
 
