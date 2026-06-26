@@ -93,7 +93,7 @@ export class PostgresReputationStore implements ReputationStore {
         row.createdAt,
         row.stellarTransactionId,
         row.reconciledAt,
-        row.disputed,
+        row.disputed ? 1 : 0,
         row.disputedReason,
       ]
     );
@@ -139,7 +139,7 @@ export class PostgresReputationStore implements ReputationStore {
       `UPDATE outcome_log
          SET disputed = $2, disputed_reason = $3
        WHERE intent_hash = $1`,
-      [intentHash, update.disputed, update.disputedReason]
+      [intentHash, update.disputed ? 1 : 0, update.disputedReason]
     );
   }
 
