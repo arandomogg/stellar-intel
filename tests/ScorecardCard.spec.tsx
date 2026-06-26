@@ -47,6 +47,34 @@ describe('ScorecardCard', () => {
     expect(screen.getByText('0.85%')).toBeInTheDocument();
   });
 
+  it('renders metrics from the windowed scorecards API response', async () => {
+    fetchMock.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        anchorId: 'example.anchor',
+        scorecards: {
+          90: {
+            state: 'ok',
+            window: 90,
+            sampleSize: 42,
+            fillRate: 0.952,
+            settleMs: { p50: 18_500, p95: 90_000 },
+            slippage: { p50: 0.003, p95: 0.0125 },
+          },
+        },
+      }),
+    });
+
+    render(<ScorecardCard anchorId="example.anchor" window="90d" />);
+
+    expect(await screen.findByText('Fill rate')).toBeInTheDocument();
+    expect(screen.getByText('95.2%')).toBeInTheDocument();
+    expect(screen.getByText('19s')).toBeInTheDocument();
+    expect(screen.getByText('90s')).toBeInTheDocument();
+    expect(screen.getByText('0.3%')).toBeInTheDocument();
+    expect(screen.getByText('1.25%')).toBeInTheDocument();
+  });
+
   it('renders an empty state when the reputation API returns no metrics', async () => {
     fetchMock.mockResolvedValueOnce({
       ok: true,
