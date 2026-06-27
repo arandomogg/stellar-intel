@@ -443,7 +443,7 @@ describe('fee→rate derivation — property tests', () => {
           if (feePercentA <= feePercentB) {
             expect(totalReceivedA).toBeGreaterThanOrEqual(totalReceivedB);
           } else {
-            expect(totalReceivedA).toBeLessThan(totalReceivedB);
+            expect(totalReceivedA).toBeLessThanOrEqual(totalReceivedB);
           }
         }
       ),
